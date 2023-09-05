@@ -1,0 +1,12 @@
+com\yin\model\dto\UserQueryRequest.class
+com\yin\model\dto\User2RegisterRequest.class
+com\yin\model\entity\User.class
+com\yin\model\dto\UserUpdateRequest.class
+com\yin\model\dto\User1RegisterRequest.class
+com\yin\model\dto\UserLoginRequest.class
+com\yin\service\InnerUserService.class
+com\yin\model\dto\checkSMSCodeRequest.class
+com\yin\model\dto\UserAddRequest.class
+com\yin\model\enums\UserConstant.class
+com\yin\model\vo\UserVO.class
+com\yin\service\GeneralUtiService.class

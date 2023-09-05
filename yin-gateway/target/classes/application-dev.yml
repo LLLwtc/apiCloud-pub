@@ -1,0 +1,56 @@
+# 公共配置文件
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=source, interface
+        #流量染色（在请求头中加字段，在每个调用模拟接口的方法中效验请求头中的字段是否来自网关（或抽象成一个公共方法））
+        - AddRequestHeader=from_gateway,8090
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1     # 令牌桶每秒填充速率, 指的是允许用户每秒执行多少请求，不丢弃任何请求;
+            redis-rate-limiter.burstCapacity: 2     # 令牌桶总容量, 指的是用户在一秒钟内允许执行的最大请求数，也就是令牌桶可以保存的令牌数, 如果将此值设置为零将阻止所有请求;
+            redis-rate-limiter.requestedTokens: 1   # 指的是每个请求消耗多少个令牌, 默认是1.
+            key-resolver: "#{@pathKeyResolver}"     # 指的是限流的时候以什么维度来判断，使用SpEL表达式按名称引用BEAN(REDIS中限流相关的KEY和此处的配置相关).
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/name/**
+        # TODO 前端映射请求到网关端口8090，网关处做限流
+        - id: backend_route
+          uri: http://localhost:7529
+          predicates:
+            - Path=/api/user/**
+#        - id: add_request_header_route
+#          uri: http://localhost:8123
+#          predicates:
+#            - Path=/api/**
+#          filters:
+#            - AddRequestHeader=yupi, swag
+#            - AddRequestParameter=name, dog
+#            - name: CircuitBreaker
+#              args:
+#                name: myCircuitBreaker
+#                fallbackUri: forward:/fallback
+#        - id: yupi-fallback
+#          uri: https://yupi.icu
+#          predicates:
+#            - Path=/fallback
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace

@@ -1,0 +1,107 @@
+server:
+  port: 7529
+  servlet:
+    context-path: /api
+    # cookie 30 天过期
+    session:
+      cookie:
+        max-age: 2592000
+spring:
+  application:
+    name: yin-user-7529
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #注册中心
+  session:
+    # todo 取消注释开启分布式 session（须先配置 Redis）
+    store-type: redis
+    # 30 天过期
+    timeout: 2592000
+  # 数据库配置
+  # todo 需替换配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yuapi
+    username: root
+    password: 123456
+  # Redis 配置
+  # todo 需替换配置，然后取消注释
+  redis:
+    database: 3
+    host: 127.0.0.1
+    port: 6379
+    timeout: 5000
+    lettuce:
+      pool:
+        # 连接池最大连接数
+        max-active: 200
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+  # 文件上传
+  servlet:
+    multipart:
+      # 大小限制
+      max-file-size: 10MB
+  rabbitmq:
+    addresses: localhost
+    port: 5672
+    password: guest
+    username: guest
+    listener:
+      direct:
+        acknowledge-mode: manual
+        retry:
+          enabled: true
+          max-attempts: 5
+          initial-interval: 5000
+          multiplier: 1.5
+          max-interval: 60000
+  config:
+    activate:
+      on-profile:
+        - dev
+dubbo:
+  application:
+    name: dubbo-user
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    address: nacos://localhost:8848
+  scan:
+    base-packages: com.yin.user.dubbo
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+    show-extensions: true
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.yin.api.user
+  default-flat-param-object: false
+
+mybatis-plus:
+  type-aliases-package: com.yin.**.model.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+
+#支付宝支付
+alipay:
+  appId: 9021000126600449
+  appPrivateKey: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCENt/OOpFGSFVNti6Q+WB9pPo23FhpJfqExqX+3RODy6XEPmD1Q21P85M7lmcbQRU992MdcbNJIQI6toZGVSeRRNNXGRrd+sEv0+6QakiNYyORawINrh/mUpLox9KaUehkzlw7FTTTZkTubh6wDUiWBQtKj2MMSnU2rsE3vhAMPWay2tfHr0qIPG2EkodDeTMJ9cLxZR3s7W52vlayvaxmj6m2RYfYvmIJKaj/9NtvKqPKzfivWjyQCzeuFNVBQbUDDG6RUgFsKW4XJ+EyB9XYHP+DyWjrH3rxMXmD6Kjs09C7C5NkslZ26za3q6AYaccwcheuaT7TkdLkJIaV0tANAgMBAAECggEAKpn34V6Twt65xdGHDaWdBr8q9JRpVHAtWa0cfZPEnvn2jtY+raitR07HyTJ8RJbi/lWBNVKWn2CodDyt5Wm41yEjK/Rl6NLMftm+DACDIjOomUmunrPViYRf2+vPG3R6+khYBZ2eqONSILWQ489T7Srw6XRsSOCRBi6nCYwPZbHIj8pvBxRrhy8uUFFw1Ntz4HxoqhgqMQF8obIHxmaXpS9Mik+CXQiiJaOoslz6AVN9R/7ZAvjWJWkxx1tHsxJheIYIuCuyFACfPyueB9woVXFah5jxS5teQk5qpiC9RtLWlOQuEZyzLFVl9+41SpQ4DVkaFUWV5o76wQXAKtz7zQKBgQC950EhmsxWlAqd/SOffDV1xj1YgrbGVcLyQ2dDmqr7TlfQXNykf0mbwUmOoGalmZCJujdXA290+NSpr89RHN2IVLQEPvXIJhk5pX252dN64Wfwdw1mbHzpRtAScMxeeySBVPFg7N8CXTfHfNXlLepiCiTt/7cb6DyLCq9iGudQCwKBgQCyO2wkyneVuiQwyQiMtRCMIYrYBH+RgwWDvSItMIImQ/VYj1gT2MJVumcyaauE4mXVHaSreBTO9VsN9M2Fz5QKmsjzFxYQtsk1vmFXRdkdo3yzGQ7GOZMjXOggFpjiqjmLBdAQ3aYZt0eupBJqND9Ucw/dMbyVk4Qblq2oRfP3RwKBgAUeBC1JpJP4rUiQl7Mmf7JKw0BtVUuG6BfrJQ83TcAz3j3pIrD0FSGzVa4YOGvh9XkgoXkgyJIYWnKwICAJbRbNYYRzxd+81xUslnS5n+9Bv7FFJAFMjxkiJV052Of63YL2rQJ1n5TKukQP4xun3xcBOvmG2IJSAb+lbBBytST9AoGANsTx34BkLRuNQXyVZv/A/P7VtrnzJZj4mdoF5ZMRe4bInxU1gKvMVCG60pAMSAJ2Pn4kexikdFCLUYeXnHYETRnxhFnkyvAQdrZxHSt2o5f4muSpWJqar3Q+VJX9FzIuCp2XqYcjIqXinjUG/6HckCvnhRZimChDoWK1LI+Kf8MCgYBrAgnxtM+scmYRMw2A5PxF3ApZNyM0qxQ5vlw0et/JpgFxHBFXelEOxYLwPuXLcjTWgZqrUfO9g/WniCk0cofCcaQQwFn+F0WHnzwT0gRcXH3O1Ha4Xoeui353zVWcoA4dH/tJCeCemdQiBceHgzp036qvXNofsszHiTpOyfkz0g==
+  alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhDbfzjqRRkhVTbYukPlgfaT6NtxYaSX6hMal/t0Tg8ulxD5g9UNtT/OTO5ZnG0EVPfdjHXGzSSECOraGRlUnkUTTVxka3frBL9PukGpIjWMjkWsCDa4f5lKS6MfSmlHoZM5cOxU002ZE7m4esA1IlgULSo9jDEp1Nq7BN74QDD1mstrXx69KiDxthJKHQ3kzCfXC8WUd7O1udr5Wsr2sZo+ptkWH2L5iCSmo//Tbbyqjys34r1o8kAs3rhTVQUG1AwxukVIBbCluFyfhMgfV2Bz/g8lo6x968TF5g+io7NPQuwuTZLJWdus2t6ugGGnHMHIXrmk+05HS5CSGldLQDQIDAQAB

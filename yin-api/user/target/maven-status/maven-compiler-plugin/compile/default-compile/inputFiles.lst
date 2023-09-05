@@ -1,0 +1,12 @@
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\UserUpdateRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\User2RegisterRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\enums\UserConstant.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\service\GeneralUtiService.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\checkSMSCodeRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\UserQueryRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\UserAddRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\UserLoginRequest.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\entity\User.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\vo\UserVO.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\service\InnerUserService.java
+F:\WYY\api-cloud\yin-api\user\src\main\java\com\yin\model\dto\User1RegisterRequest.java

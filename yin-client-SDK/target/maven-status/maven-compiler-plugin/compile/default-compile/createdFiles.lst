@@ -1,0 +1,5 @@
+com\yin\utils\SignUtils.class
+com\yin\client\YuApiClient.class
+META-INF\spring-configuration-metadata.json
+com\yin\YuApiClientConfig.class
+com\yin\model\User.class

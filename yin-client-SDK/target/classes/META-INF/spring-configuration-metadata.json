@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "yuapi.client",
+      "type": "com.yin.client.SDK.YinApiClientConfig",
+      "sourceType": "com.yin.client.SDK.YinApiClientConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "yuapi.client.access-key",
+      "type": "java.lang.String",
+      "sourceType": "com.yin.client.SDK.YinApiClientConfig"
+    },
+    {
+      "name": "yuapi.client.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "com.yin.client.SDK.YinApiClientConfig"
+    }
+  ],
+  "hints": []
+}

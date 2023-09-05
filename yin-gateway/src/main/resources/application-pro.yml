@@ -1,0 +1,63 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: yin-gateway-8090
+#  cloud:
+#    nacos:
+#      server-addr: localhost:8848 #注册中心
+    gateway:
+      routes:
+        - id: yin-user-7529 #用户服务
+          uri: lb://yin-user-7529
+          predicates:
+            - Path=/api/user/**
+        - id: yin-interface-8123 #接口服务
+          uri: lb://yin-interface-8123
+          predicates:
+            - Path=/api/name/**
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8090"
+              - "http://localhost:8123"
+              - "http://localhost:7529"
+            allowedMethods:
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*"
+            allowCredentials: true
+            maxAge: 360000
+      default-filters:
+        - DedupeResponseHeader=Vary Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
+  config:
+    activate:
+      on-profile:
+        - pro
+knife4j:
+  gateway:
+    enabled: true
+    strategy: manual
+    routes:
+      - name: 用户服务
+        url: /userApi/v3/api-docs?group=default
+        order: 1
+        context-path: /api/user/** #添加请求前缀
+      - name: 接口服务
+        url: /textApi/v3/api-docs?group=default
+        order: 1
+        context-path: /api/name/**
+dubbo:
+  application:
+    name: yin-gateway-dubbo
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
